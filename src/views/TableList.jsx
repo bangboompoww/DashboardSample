@@ -21,7 +21,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import axios from 'axios';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import modal from './Modal'
+import TheModal from './Modal'
 class Table extends Component {
 	state = {
 		theData: [],
@@ -68,7 +68,7 @@ class Table extends Component {
 	};
 
 	componentDidMount() {
-		axios.get('http://localhost:3000/transaction')
+		axios.get('')
 			.then((response) => {
 			console.log(response.data);
 
@@ -93,7 +93,7 @@ class Table extends Component {
 						filter={filterFactory()}
 						pagination={paginationFactory()}
 					/>
-					<modal />
+					<TheModal />
 				</div>
 			</div>
 		);

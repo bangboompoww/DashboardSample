@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const mysql = require('mysql')
 const app = express()
 
@@ -16,10 +17,12 @@ connection.connect(err =>{
     }
 })
 
+app.use(cors());
+
 console.log(connection);
 
 
-app.get('/', (req,res) => {
+app.get('/modalresults', (req,res) => {
     connection.query(SELECT_ALL_RESULT_QUERY, (err,results) => {
         if(err){
             return res.send(err)
