@@ -21,13 +21,14 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import axios from 'axios';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-
+import modal from './Modal'
 class Table extends Component {
 	state = {
 		theData: [],
 
 		columns: [
 			{
+				
 				dataField: 'id',
 				text: 'id',
 				sort: true
@@ -92,6 +93,7 @@ class Table extends Component {
 						filter={filterFactory()}
 						pagination={paginationFactory()}
 					/>
+					<modal />
 				</div>
 			</div>
 		);
