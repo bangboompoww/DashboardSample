@@ -21,79 +21,120 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import axios from 'axios';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import TheModal from './Modal'
+import { Button, Modal } from 'react-bootstrap';
+
 class Table extends Component {
-	state = {
-		theData: [],
+	constructor(props) {
+		super(props);
+		this.state = {
+			theData: [],
+			show: false,
+			resultData: [],
+			setModalInfo: false,
+			columns: [
+				{
+					dataField: 'id',
+					text: 'id',
+					sort: true
+				},
 
-		columns: [
-			{
-				
-				dataField: 'id',
-				text: 'id',
-				sort: true
-			},
+				{
+					dataField: 'quantity',
+					text: 'quantity',
+					sort: true,
+					filter: textFilter()
+				},
+				{
+					dataField: 'itemDesc',
+					text: 'itemDesc',
+					sort: true,
+					filter: textFilter()
+				},
 
-			{
-				dataField: 'quantity',
-				text: 'quantity',
-				sort: true,
-				filter: textFilter()
+				{
+					dataField: 'SalesTotal',
+					text: 'SalesTotal',
+					sort: true,
 
-			},
-			{
-				dataField: 'itemDesc',
-				text: 'itemDesc',
-				sort: true,
-				filter: textFilter()
+					filter: textFilter()
+				},
 
-			},
-
-			{
-				dataField: 'SalesTotal',
-				text: 'SalesTotal',
-				sort: true,
-
-				filter: textFilter()
-			},
-
-			{
-				dataField: 'Department',
-				text: 'Department',
-				sort: true,
-				filter: textFilter()
-
-			}
-		]
-	};
-
-	componentDidMount() {
-		axios.get('')
-			.then((response) => {
-			console.log(response.data);
-
-			this.setState({
-				theData: response.data.data
-			});
-		});
+				{
+					dataField: 'Department',
+					text: 'Department',
+					sort: true,
+					filter: textFilter()
+				}
+			]
+		};
 	}
 
+	async componentDidMount() {
+		const [ firstResponse, secondResponse ] = await axios.all([
+			axios.get('http://localhost:3000/transaction'),
+			axios.get('http://localhost:3000/modalresults')
+		]);
+
+		this.setState({
+			theData: firstResponse.data.data,
+			resultData: secondResponse.data.data
+		});
+		console.log(firstResponse);
+	}
+
+	// componentDidMount() {
+	// 	axios.get('http://localhost:3000/transaction')
+	// 	.then((response) => {
+	// 		console.log(response.data);
+
+	// 		this.setState({
+	// 			theData: response.data.data
+	// 		});
+	// 	});
+	// }
+	// componentDidMount(){
+	//     axios.get('http://localhost:3000/modalresults')
+	//     .then((response) => {
+	// 		console.log(response.data);
+
+	// 		this.setState({
+	//             resultData: response.data.data,
+
+	//         });
+
+	//     });
+
+	// }
+
+
+
 	render() {
+		const expandRow = {
+			renderer: (row) => (
+				<div>
+					{this.state.resultData.map((i) => (
+						<div>
+							{i.trans_Id} {i.Item_Name} {i.Individual_Price}
+						</div>
+					))}
+				</div>
+			)
+		};
+
 		return (
 			<div className="container">
 				<div class="row" className="hdr" />
-
 				<div style={{ marginTop: 20 }}>
 					<BootstrapTable
 						striped
 						hover
 						keyField="id"
 						data={this.state.theData}
+						expandRow={expandRow}
 						columns={this.state.columns}
 						filter={filterFactory()}
 						pagination={paginationFactory()}
 					/>
-					<TheModal />
 				</div>
 			</div>
 		);
@@ -101,4 +142,3 @@ class Table extends Component {
 }
 
 export default Table;
-

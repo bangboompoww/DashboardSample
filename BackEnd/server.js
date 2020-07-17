@@ -3,13 +3,16 @@ const cors = require('cors')
 const mysql = require('mysql')
 const app = express()
 
-const SELECT_ALL_RESULT_QUERY = 'SELECT * FROM transactionresult'
+const SELECT_ALL_RESULT_QUERY = 'SELECT * FROM transactionresultt'
+const SELECT_ALL_TRANSACTION_QUERY = 'SELECT * FROM transaction'
+
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '123',
     database: 'Client_Pagination'
 })
+
 
 connection.connect(err =>{
     if(err){
@@ -29,6 +32,17 @@ app.get('/modalresults', (req,res) => {
         } else{
             return res.json({
                 data:results
+            })
+        }
+    })
+})
+app.get('/transaction', (req,res) => {
+    connection.query(SELECT_ALL_TRANSACTION_QUERY , (err,success) => {
+        if(err){
+            return res.send(err)
+        } else {
+            res.json({
+                data: success
             })
         }
     })
