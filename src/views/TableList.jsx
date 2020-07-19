@@ -71,42 +71,17 @@ class Table extends Component {
 
 	async componentDidMount() {
 		const [ firstResponse, secondResponse ] = await axios.all([
-			axios.get('http://localhost:3000/transaction'),
-			axios.get('http://localhost:3000/modalresults')
+			axios.get(`http://localhost:3000/transaction`),
+			axios.get(`http://localhost:3000/results`)
 		]);
 
 		this.setState({
 			theData: firstResponse.data.data,
-			resultData: secondResponse.data.data
+			resultData: secondResponse.data
 		});
-		console.log(firstResponse);
+		console.log(secondResponse);
 	}
-
-	// componentDidMount() {
-	// 	axios.get('http://localhost:3000/transaction')
-	// 	.then((response) => {
-	// 		console.log(response.data);
-
-	// 		this.setState({
-	// 			theData: response.data.data
-	// 		});
-	// 	});
-	// }
-	// componentDidMount(){
-	//     axios.get('http://localhost:3000/modalresults')
-	//     .then((response) => {
-	// 		console.log(response.data);
-
-	// 		this.setState({
-	//             resultData: response.data.data,
-
-	//         });
-
-	//     });
-
-	// }
-
-
+	
 
 	render() {
 		const expandRow = {
@@ -114,7 +89,7 @@ class Table extends Component {
 				<div>
 					{this.state.resultData.map((i) => (
 						<div>
-							{i.trans_Id} {i.Item_Name} {i.Individual_Price}
+							{i.id } {i.Item_Name} {i.Individual_Price}
 						</div>
 					))}
 				</div>
