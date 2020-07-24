@@ -3,7 +3,6 @@ const cors = require('cors')
 const mysql = require('mysql')
 const app = express()
 const bodyparser = require('body-parser')
-
 app.use(bodyparser.json())
 
 app.use(cors());
@@ -27,7 +26,7 @@ mysqlConnection.connect((err) => {
 
 
 
-
+// joined table
 app.get('/results', (req,res) => {
     mysqlConnection.query(SELECT_ALL_RESULT_QUERY, (err,results) => {
         if(!err){
@@ -37,6 +36,16 @@ app.get('/results', (req,res) => {
         }
     })
 })
+app.get('/results/:id', (req,res) => {
+    mysqlConnection.query('SELECT * FROM transactions WHERE id =  ?', [req.params.id], (rows,err) => {
+            if(!err){
+                console.log(rows);
+            }else{
+                console.log(err);
+            }
+        })
+ })
+
 
 app.get('/transaction', (req,res) => {
     mysqlConnection.query(SELECT_ALL_TRANSACTION_QUERY , (err,success) => {
@@ -50,15 +59,7 @@ app.get('/transaction', (req,res) => {
     })
 })
 
-app.get('/results/:id', (req,res) => {
-    mysqlConnection.query('SELECT * FROM transactions WHERE id =  1', [req.params.id], (rows,err) => {
-            if(!err){
-                console.log(rows);
-            }else{
-                console.log(err);
-            }
-        })
- })
+// the joined table
 
 
 app.listen(3000, () => {

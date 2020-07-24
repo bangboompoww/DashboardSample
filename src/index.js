@@ -19,7 +19,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/animate.min.css";
 import "./assets/sass/light-bootstrap-dashboard-react.scss?v=1.3.0";
@@ -29,6 +31,6 @@ import App from './app'
 import AdminLayout from "layouts/Admin.jsx";
 
 ReactDOM.render(
-  <App />,
+  <App /> ,
   document.getElementById("root")
 );
