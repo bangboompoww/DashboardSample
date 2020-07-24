@@ -17,7 +17,7 @@
 */
 import React, { Component } from "react";
 import {
-  Grid,
+  Container,
   Row,
   Col,
   FormGroup,
@@ -36,7 +36,7 @@ class FreeingReturns extends Component {
   render() {
     return (
       <div className="content">
-        <Grid fluid>
+        <Container fluid>
           <Row>
             <Col lg={3} sm={6}>
               <StatsCard
@@ -66,7 +66,7 @@ class FreeingReturns extends Component {
               />
             </Col>
           </Row>
-        </Grid>
+        </Container>
       </div>
     );
   }

@@ -9,7 +9,7 @@ import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import { withAuthenticator } from "aws-amplify-react";
 import AdminLayout from "layouts/Admin.jsx";
 
-export default function App() {
+function App() {
     return (
         <BrowserRouter>
             <Switch>
@@ -19,6 +19,8 @@ export default function App() {
         </BrowserRouter>
     )
 }
+
+export default App
 
 /*export default function App() {
     return (
