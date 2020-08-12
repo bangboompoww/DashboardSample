@@ -16,15 +16,140 @@
 
 */
 
+// import React, { useState, useEffect } from 'react';
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import axios from 'axios';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { Modal, Button } from 'react-bootstrap';
+
+// const Table = () => {
+// 	const [ transactions, setTransactions ] = useState([]);
+// 	const [ modalInfo, setModalInfo ] = useState([]);
+// 	const [ showModal, setShowModal ] = useState(false);
+// 	const [ show, setShow ] = useState(false);
+
+// 	const handleClose = () => setShow(false);
+// 	const handleShow = () => setShow(true);
+
+// 	const getTransactionApi = async () => {
+// 		try {
+// 			const data = await axios.get('http://localhost:3000/transaction');
+// 			setTransactions(data.data.data);
+// 			console.log(data.data.data);
+// 		} catch (err) {
+// 			console.log(err);
+// 		}
+// 	};
+
+// 	useEffect(() => {
+// 		getTransactionApi();
+// 	}, []);
+
+// 	const rowEvents = {
+// 		onClick: (e, row) => {
+// 			console.log(row);
+// 			setModalInfo(row);
+// 			Toggle();
+// 		}
+// 	};
+
+// 	const Toggle = () => {
+// 		setShowModal(handleShow);
+// 	};
+
+// 	const TheModal = (p) => {
+// 		return (
+// 			<Modal show={show} onHide={handleClose}>
+// 				<Modal.Header closeButton>
+// 				<ol> trans_id:  {  modalInfo.trans_Id  } </ol>
+// 				</Modal.Header>
+// 				<Modal.Body> 				
+
+// 				<ol> quantity:  {  modalInfo.quantity  } </ol>
+// 				<ol>  itemDesc: {  modalInfo.itemDesc  } </ol>
+// 				<ol> Department:  {  modalInfo.Department } </ol>
+// 				<ol>  SalesTotal:  {  modalInfo.SalesTotal } </ol>
+// 				<ol> Item_Name: {  modalInfo.Item_Name  } </ol>
+			 	
+				
+
+				
+// 				</Modal.Body>
+// 				<Modal.Footer>
+// 					<Button variant="secondary" onClick={handleClose}>
+// 						Close
+// 					</Button>
+// 				</Modal.Footer>
+// 			</Modal>
+// 		);
+// 	};
+
+// 	const columns = [
+// 		{
+// 			dataField: 'id',
+// 			text: 'id',
+// 			sort: true
+// 		},
+
+// 		{
+// 			dataField: 'quantity',
+// 			text: 'quantity',
+// 			sort: true,
+// 			filter: textFilter()
+// 		},
+// 		{
+// 			dataField: 'itemDesc',
+// 			text: 'itemDesc',
+// 			sort: true,
+// 			filter: textFilter()
+// 		},
+
+// 		{
+// 			dataField: 'SalesTotal',
+// 			text: 'SalesTotal',
+// 			sort: true,
+
+// 			filter: textFilter()
+// 		},
+
+// 		{
+// 			dataField: 'Department',
+// 			text: 'Department',
+// 			sort: true,
+// 			filter: textFilter()
+// 		}
+// 	];
+
+// 	return (
+// 		<div className="container">
+// 			<div class="row" className="hdr" />
+// 			<div style={{ marginTop: 20 }}>
+// 				<BootstrapTable
+// 					keyField="id"
+// 					data={transactions}
+// 					rowEvents={rowEvents}
+// 					columns={columns}
+// 					filter={filterFactory()}
+// 					pagination={paginationFactory()}
+// 				/>
+				
+// 			</div>
+// 			{show ? <TheModal /> : null}
+// 		</div>
+// 	);
+// };
+
 
 class Table extends Component {
-	state = {
+	constructor(props){
+		super(props)
+
+	this.state = {
+		isShowing: false,
 		theData: [],
+		resultData: undefined,
 
 		columns: [
 			{
@@ -38,14 +163,12 @@ class Table extends Component {
 				text: 'quantity',
 				sort: true,
 				filter: textFilter()
-
 			},
 			{
 				dataField: 'itemDesc',
 				text: 'itemDesc',
 				sort: true,
 				filter: textFilter()
-
 			},
 
 			{
@@ -61,42 +184,52 @@ class Table extends Component {
 				text: 'Department',
 				sort: true,
 				filter: textFilter()
-
 			}
 		]
 	};
+}
 
-	componentDidMount() {
-		axios.get('http://localhost:3000/transaction')
-			.then((response) => {
-			console.log(response.data);
+	async componentDidMount() {
+		const [ firstResponse ] = await axios.all([ axios.get(`http://localhost:3000/transaction`) ]);
 
-			this.setState({
-				theData: response.data.data
-			});
+		this.setState({
+			theData: firstResponse.data.data
 		});
+		console.log(firstResponse);
 	}
 
 	render() {
-		return (
-			<div className="container">
-				<div class="row" className="hdr" />
 
+		const expandRow = {
+			renderer: row => (
+			  <div>
+			
+				<p> { this.state.theData.map((i) => {
+					return <p>{i.trans_Id}</p>
+				}) } </p>
+			  </div>
+			)
+		  };
+		return (
+		<div className="container">
+				<div class="row" className="hdr" />
 				<div style={{ marginTop: 20 }}>
 					<BootstrapTable
 						striped
 						hover
 						keyField="id"
 						data={this.state.theData}
+						expandRow={ expandRow }
 						columns={this.state.columns}
 						filter={filterFactory()}
 						pagination={paginationFactory()}
+						handleShowRow={this.handleShowRow}
 					/>
+					</div>
 				</div>
-			</div>
 		);
 	}
 }
 
-export default Table;
 
+export default Table
